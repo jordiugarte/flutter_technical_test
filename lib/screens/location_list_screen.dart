@@ -1,0 +1,93 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tech_test/bloc/saved_addresses/saved_addresses_cubit.dart';
+import 'package:tech_test/data/constants.dart';
+import 'package:tech_test/models/address_form_arguments_model.dart';
+import 'package:tech_test/widgets/location_tile_widget.dart';
+
+class LocationListScreen extends StatefulWidget {
+  const LocationListScreen({super.key});
+
+  @override
+  State<LocationListScreen> createState() => _LocationListScreenState();
+}
+
+class _LocationListScreenState extends State<LocationListScreen>
+    with WidgetsBindingObserver {
+  final SavedAddressesCubit _addressBloc = SavedAddressesCubit();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      setState(() {
+        _addressBloc.getSavedAddresses();
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _addressBloc.getSavedAddresses();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Location List'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: BlocBuilder<SavedAddressesCubit, SavedAddressesState>(
+          bloc: _addressBloc,
+          builder: (context, state) {
+            if (state is SavedAddressesLoadedState) {
+              return ListView.builder(
+                itemCount: state.data.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return AddressTile(
+                    addressModel: state.data[index],
+                    savedAddressesCubit: _addressBloc,
+                  );
+                },
+              );
+            } else if (state is SavedAddressesLoadedEmptyState) {
+              return const Expanded(
+                child: Center(
+                  child: Text(
+                    'No locations found',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            } else if (state is SavedAddressesErrorState) {
+              return Text(state.message);
+            } else {
+              return const CircularProgressIndicator();
+            }
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.of(context).pushNamed(
+          Constants.routes.addressForm,
+          arguments: AddressFormArgumentsModel(
+            addressModel: null,
+            editing: false,
+          ),
+        ),
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
