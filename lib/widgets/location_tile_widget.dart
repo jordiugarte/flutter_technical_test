@@ -23,6 +23,10 @@ class AddressTile extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
+          side: addressModel.mark
+              ? const BorderSide(color: Colors.blueAccent, width: 2)
+              : const BorderSide(
+                  color: Color.fromARGB(31, 122, 122, 122), width: 0),
         ),
         child: Container(
           height: 128,
@@ -31,7 +35,65 @@ class AddressTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(addressModel.name),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    addressModel.name,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 24),
+                  ),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.location_city,
+                        size: 14,
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(addressModel.municipality)
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.streetview_outlined,
+                        size: 14,
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(addressModel.street)
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.door_front_door,
+                        size: 14,
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(addressModel.postalCode)
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.location_history,
+                        size: 14,
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(addressModel.settlement)
+                    ],
+                  ),
+                ],
+              ),
               Column(
                 children: [
                   IconButton(
@@ -70,7 +132,10 @@ class AddressTile extends StatelessWidget {
     );
     Widget continueButton = TextButton(
       child: const Text("Yes"),
-      onPressed: () => savedAddressesCubit.deleteAddress(addressModel.id),
+      onPressed: () {
+        savedAddressesCubit.deleteAddress(addressModel.id);
+        Navigator.pop(context);
+      },
     );
     AlertDialog alert = AlertDialog(
       title: const Text("Delete address"),

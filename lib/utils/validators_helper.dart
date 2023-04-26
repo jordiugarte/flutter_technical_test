@@ -3,7 +3,7 @@ class ValidatorsHelper {
     if (value == null) {
       return "Enter a valid name";
     }
-    if (!_isInsideRange(0, 128, value!)) {
+    if (!_isInsideRange(0, 128, value)) {
       return "Name must be less or equal than 128 characters";
     } else {
       return null;
@@ -14,7 +14,7 @@ class ValidatorsHelper {
     if (value == null) {
       return "Enter a valid street";
     }
-    if (!_isInsideRange(0, 128, value!)) {
+    if (!_isInsideRange(0, 128, value)) {
       return "Street must be less or equal than 128 characters";
     } else {
       return null;
@@ -25,7 +25,7 @@ class ValidatorsHelper {
     if (value == null) {
       return "Enter valid additional information";
     }
-    if (!_isInsideRange(0, 256, value!)) {
+    if (!_isInsideRange(0, 256, value)) {
       return "Additional information must be less or equal than 256 characters";
     } else {
       return null;
@@ -36,7 +36,7 @@ class ValidatorsHelper {
     if (value == null) {
       return "Enter a valid postal code";
     }
-    if (!_isInsideRange(0, 5, value!)) {
+    if (!_isInsideRange(0, 5, value)) {
       return "Postal Code must be less or equal than 5 characters";
     } else {
       return null;
@@ -47,7 +47,7 @@ class ValidatorsHelper {
     if (value == null) {
       return "Enter a valid municipality";
     }
-    if (!_isInsideRange(0, 64, value!)) {
+    if (!_isInsideRange(0, 64, value)) {
       return "Municipality must be less or equal than 64 characters";
     } else {
       return null;
