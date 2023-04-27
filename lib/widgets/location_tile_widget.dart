@@ -97,11 +97,15 @@ class AddressTile extends StatelessWidget {
               Column(
                 children: [
                   IconButton(
-                    onPressed: () => Navigator.of(context).pushNamed(
-                      Constants.routes.addressForm,
-                      arguments: AddressFormArgumentsModel(
-                          addressModel: addressModel, editing: true),
-                    ),
+                    onPressed: () => Navigator.of(context)
+                        .pushNamed(
+                          Constants.routes.addressForm,
+                          arguments: AddressFormArgumentsModel(
+                              addressModel: addressModel, editing: true),
+                        )
+                        .then((val) => val as bool
+                            ? savedAddressesCubit.getSavedAddresses()
+                            : null),
                     icon: const Icon(
                       Icons.edit,
                       color: Colors.blue,

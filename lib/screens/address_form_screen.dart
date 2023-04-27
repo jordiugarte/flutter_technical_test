@@ -22,12 +22,14 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
   final _postalCodeController = TextEditingController();
   final _stateController = TextEditingController();
   final _municipalityController = TextEditingController();
-  String? _settlementValue = null;
+  String? _settlementValue;
   final _additionalController = TextEditingController();
   bool _defaultValue = false;
 
   late AddressModel? _addressModel;
   late bool _editing;
+
+  bool _valuesWereSet = false;
 
   final SavedAddressesCubit _addressCubit = SavedAddressesCubit();
   final LocationCubit _locationCubit = LocationCubit();
@@ -61,7 +63,9 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
       _settlementValue = _addressModel!.settlement;
       _additionalController.text = _addressModel!.additional;
       _defaultValue = _addressModel!.mark;
+      _locationCubit.getLocations(_postalCodeController.text);
     }
+    _valuesWereSet = true;
   }
 
   void editAddress() {
@@ -95,7 +99,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    setValues();
+    if (!_valuesWereSet) setValues();
     return Scaffold(
       appBar: AppBar(
         title: Text(_editing ? 'Edit address' : 'Add Address'),
@@ -108,7 +112,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
             bloc: _addressCubit,
             listener: (context, state) {
               if (state is SavedAddressesSavedState) {
-                Navigator.pop(context);
+                Navigator.pop(context, true);
               }
             },
             child: Form(
@@ -124,6 +128,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                       border: OutlineInputBorder(),
                     ),
                     validator: ValidatorsHelper.isValidStreet,
+                    maxLength: 128,
                   ),
                   const SizedBox(
                     height: 16,
@@ -136,6 +141,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                       border: OutlineInputBorder(),
                     ),
                     validator: ValidatorsHelper.isValidStreet,
+                    maxLength: 128,
                   ),
                   const SizedBox(
                     height: 16,
@@ -154,12 +160,14 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                   ),
                   TextFormField(
                     controller: _additionalController,
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 5,
                     decoration: const InputDecoration(
                       labelText: 'Additional info',
                       border: OutlineInputBorder(),
                     ),
                     validator: ValidatorsHelper.isValidAdditional,
+                    maxLength: 256,
                   ),
                   const SizedBox(
                     height: 16,
@@ -188,6 +196,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                     onChanged: (value) {
                       _locationCubit.getLocations(value);
                     },
+                    maxLength: 5,
                   ),
                   const SizedBox(
                     height: 16,
@@ -212,7 +221,9 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                     height: 16,
                   ),
                   ElevatedButton(
-                    onPressed: () => _editing ? editAddress() : addAddress(),
+                    onPressed: _formKey.currentState!.validate()
+                        ? () => _editing ? editAddress() : addAddress()
+                        : null,
                     child: const SizedBox(
                       width: double.infinity,
                       child: Text(

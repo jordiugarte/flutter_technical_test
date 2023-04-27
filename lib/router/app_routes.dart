@@ -11,7 +11,7 @@ class AppRoutes {
     Map<String, Widget Function(BuildContext)> appRoutes = {};
     appRoutes.addAll({
       Constants.routes.locationList: (BuildContext context) =>
-          const LocationListScreen(),
+          LocationListScreen(),
       Constants.routes.addressForm: (BuildContext context) =>
           const AddressFormScreen(),
       Constants.routes.addressDetails: (BuildContext context) =>
@@ -22,7 +22,7 @@ class AppRoutes {
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     return MaterialPageRoute(
-      builder: (context) => const LocationListScreen(),
+      builder: (context) => LocationListScreen(),
     );
   }
 }

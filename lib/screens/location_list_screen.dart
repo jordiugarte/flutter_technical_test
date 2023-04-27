@@ -6,36 +6,12 @@ import 'package:tech_test/models/address_form_arguments_model.dart';
 import 'package:tech_test/widgets/location_tile_widget.dart';
 
 class LocationListScreen extends StatefulWidget {
-  const LocationListScreen({super.key});
-
   @override
-  State<LocationListScreen> createState() => _LocationListScreenState();
+  _LocationListScreenState createState() => _LocationListScreenState();
 }
 
-class _LocationListScreenState extends State<LocationListScreen>
-    with WidgetsBindingObserver {
+class _LocationListScreenState extends State<LocationListScreen> {
   final SavedAddressesCubit _addressBloc = SavedAddressesCubit();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(final AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      setState(() {
-        _addressBloc.getSavedAddresses();
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,13 +54,19 @@ class _LocationListScreenState extends State<LocationListScreen>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).pushNamed(
-          Constants.routes.addressForm,
-          arguments: AddressFormArgumentsModel(
-            addressModel: null,
-            editing: false,
-          ),
-        ),
+        onPressed: () => Navigator.of(context)
+            .pushNamed(
+              Constants.routes.addressForm,
+              arguments: AddressFormArgumentsModel(
+                addressModel: null,
+                editing: false,
+              ),
+            )
+            .then((val) => val as bool
+                ? setState(() {
+                    _addressBloc.getSavedAddresses();
+                  })
+                : null),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),

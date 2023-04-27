@@ -68,6 +68,6 @@ class ValidatorsHelper {
   }
 
   static bool _isInsideRange(int min, int max, String value) {
-    return value.length >= min && value.length <= max;
+    return value.length > min && value.length <= max;
   }
 }

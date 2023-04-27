@@ -6,9 +6,9 @@ import 'package:tech_test/services/saved_addresses_Service.dart';
 part 'saved_addresses_state.dart';
 
 class SavedAddressesCubit extends Cubit<SavedAddressesState> {
-  SavedAddressesCubit() : super(SavedAddressesInitialState()) {}
+  SavedAddressesCubit() : super(SavedAddressesInitialState());
 
-  SavedAddressesService _savedAddressesService = SavedAddressesService();
+  final SavedAddressesService _savedAddressesService = SavedAddressesService();
 
   void getSavedAddresses() async {
     emit(SavedAddressesLoadingState());

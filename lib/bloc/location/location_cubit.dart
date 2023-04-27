@@ -7,7 +7,7 @@ import 'package:tech_test/services/location_service.dart';
 part 'location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
-  LocationCubit() : super(LocationInitialState()) {}
+  LocationCubit() : super(LocationInitialState());
 
   void getLocations(String postalCode) async {
     emit(LocationLoadingState());
