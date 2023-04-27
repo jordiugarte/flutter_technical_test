@@ -15,10 +15,6 @@ class App extends StatelessWidget {
       initialRoute: 'locations_list',
       routes: AppRoutes.getAppRoutes(),
       onGenerateRoute: AppRoutes.onGenerateRoute,
-      supportedLocales: const [
-        Locale('en'),
-        Locale('es'),
-      ],
     );
   }
 }
