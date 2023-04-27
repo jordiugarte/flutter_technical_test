@@ -10,7 +10,8 @@ class LocationService {
         await http.get(Uri.parse('${Constants.urls.baseUrl}$postalCode'));
     if (response.statusCode == 200) {
       try {
-        return LocationsContainerModel.fromJson(jsonDecode(response.body));
+        return LocationsContainerModel.fromJson(
+            jsonDecode(const Utf8Decoder().convert(response.bodyBytes)));
       } catch (e) {
         return null;
       }
