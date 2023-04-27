@@ -127,7 +127,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                       labelText: 'Name',
                       border: OutlineInputBorder(),
                     ),
-                    validator: ValidatorsHelper.isValidStreet,
+                    validator: ValidatorsHelper.isValidName,
                     maxLength: 128,
                     onChanged: (value) => setState(() {}),
                   ),

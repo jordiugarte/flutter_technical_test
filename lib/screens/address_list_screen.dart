@@ -27,6 +27,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
           builder: (context, state) {
             if (state is SavedAddressesLoadedState) {
               return ListView.builder(
+                clipBehavior: Clip.none,
                 itemCount: state.data.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
