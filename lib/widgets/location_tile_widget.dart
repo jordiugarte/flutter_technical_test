@@ -138,7 +138,7 @@ class AddressTile extends StatelessWidget {
       child: const Text("Yes"),
       onPressed: () {
         savedAddressesCubit.deleteAddress(addressModel.id);
-        Navigator.pop(context);
+        Navigator.pop(context, true);
       },
     );
     AlertDialog alert = AlertDialog(
@@ -154,6 +154,6 @@ class AddressTile extends StatelessWidget {
       builder: (BuildContext context) {
         return alert;
       },
-    );
+    ).then((value) => savedAddressesCubit.getSavedAddresses());
   }
 }

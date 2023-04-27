@@ -1,4 +1,15 @@
 class ValidatorsHelper {
+  static String? isValidState(String? value) {
+    if (value == null) {
+      return "Enter a valid state";
+    }
+    if (!_isInsideRange(0, 64, value)) {
+      return "State must be less or equal than 128 characters";
+    } else {
+      return null;
+    }
+  }
+
   static String? isValidName(String? value) {
     if (value == null) {
       return "Enter a valid name";
@@ -36,7 +47,7 @@ class ValidatorsHelper {
     if (value == null) {
       return "Enter a valid postal code";
     }
-    if (!_isInsideRange(0, 5, value)) {
+    if (!_isSize(5, value)) {
       return "Postal Code must be less or equal than 5 characters";
     } else {
       return null;
@@ -69,5 +80,9 @@ class ValidatorsHelper {
 
   static bool _isInsideRange(int min, int max, String value) {
     return value.length > min && value.length <= max;
+  }
+
+  static bool _isSize(int max, String value) {
+    return value.length == max;
   }
 }

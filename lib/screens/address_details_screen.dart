@@ -20,38 +20,40 @@ class AddressDetailsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _paddingContainer(
-              Text(
-                _address.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
+            Text(
+              _address.name,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
               ),
             ),
             _address.mark ? const Chip(label: Text('Default')) : Container(),
-            _paddingContainer(Row(
-              children: [
-                Icon(Icons.streetview),
-                Text(_address.street),
-              ],
-            )),
-            Text('${_address.number}'),
-            Text(_address.postalCode),
-            Text(_address.state),
-            Text(_address.municipality),
-            Text(_address.settlement),
-            Text(_address.additional),
+            _paddingContainer(const Icon(Icons.streetview), _address.street),
+            _paddingContainer(const Icon(Icons.numbers), '${_address.number}'),
+            _paddingContainer(
+                const Icon(Icons.door_back_door), _address.postalCode),
+            _paddingContainer(const Icon(Icons.car_crash), _address.state),
+            _paddingContainer(
+                const Icon(Icons.location_city), _address.municipality),
+            _paddingContainer(
+                const Icon(Icons.location_city_sharp), _address.settlement),
+            _paddingContainer(const Icon(Icons.info), _address.additional),
           ],
         ),
       ),
     );
   }
 
-  Widget _paddingContainer(Widget widget) {
+  Widget _paddingContainer(Icon icon, String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: widget,
+      child: Row(
+        children: [
+          icon,
+          const SizedBox(width: 8),
+          Text(text),
+        ],
+      ),
     );
   }
 }

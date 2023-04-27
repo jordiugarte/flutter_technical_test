@@ -5,12 +5,12 @@ import 'package:tech_test/data/constants.dart';
 import 'package:tech_test/models/address_form_arguments_model.dart';
 import 'package:tech_test/widgets/location_tile_widget.dart';
 
-class LocationListScreen extends StatefulWidget {
+class AddressListScreen extends StatefulWidget {
   @override
-  _LocationListScreenState createState() => _LocationListScreenState();
+  _AddressListScreenState createState() => _AddressListScreenState();
 }
 
-class _LocationListScreenState extends State<LocationListScreen> {
+class _AddressListScreenState extends State<AddressListScreen> {
   final SavedAddressesCubit _addressBloc = SavedAddressesCubit();
 
   @override

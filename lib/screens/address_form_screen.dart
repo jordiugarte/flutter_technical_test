@@ -129,6 +129,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                     ),
                     validator: ValidatorsHelper.isValidStreet,
                     maxLength: 128,
+                    onChanged: (value) => setState(() {}),
                   ),
                   const SizedBox(
                     height: 16,
@@ -142,6 +143,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                     ),
                     validator: ValidatorsHelper.isValidStreet,
                     maxLength: 128,
+                    onChanged: (value) => setState(() {}),
                   ),
                   const SizedBox(
                     height: 16,
@@ -154,6 +156,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                       border: OutlineInputBorder(),
                     ),
                     validator: ValidatorsHelper.isValidNumber,
+                    onChanged: (value) => setState(() {}),
                   ),
                   const SizedBox(
                     height: 16,
@@ -168,6 +171,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                     ),
                     validator: ValidatorsHelper.isValidAdditional,
                     maxLength: 256,
+                    onChanged: (value) => setState(() {}),
                   ),
                   const SizedBox(
                     height: 16,
@@ -194,7 +198,14 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                     ),
                     validator: ValidatorsHelper.isValidPostalCode,
                     onChanged: (value) {
-                      _locationCubit.getLocations(value);
+                      setState(() {
+                        if (value.length == 5) {
+                          _settlementValue = null;
+                          _stateController.text = '';
+                          _municipalityController.text = '';
+                          _locationCubit.getLocations(value);
+                        }
+                      });
                     },
                     maxLength: 5,
                   ),
@@ -221,7 +232,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                     height: 16,
                   ),
                   ElevatedButton(
-                    onPressed: _formKey.currentState!.validate()
+                    onPressed: _validate()
                         ? () => _editing ? editAddress() : addAddress()
                         : null,
                     child: const SizedBox(
@@ -241,6 +252,17 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
     );
   }
 
+  bool _validate() {
+    if (_formKey.currentState == null) {
+      return _editing;
+    } else {
+      return _formKey.currentState!.validate() &&
+          _stateController.text.isNotEmpty &&
+          _municipalityController.text.isNotEmpty &&
+          _settlementValue!.isNotEmpty;
+    }
+  }
+
   Widget _locationFields(List<LocationModel> list) {
     _settlementValue ??= list.first.asentamiento;
     _stateController.text = list.first.estado;
@@ -255,7 +277,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
             labelText: 'State',
             border: OutlineInputBorder(),
           ),
-          validator: ValidatorsHelper.isValidName,
+          onChanged: (value) => setState(() {}),
         ),
         const SizedBox(
           height: 16,
@@ -268,7 +290,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
             labelText: 'Municipality',
             border: OutlineInputBorder(),
           ),
-          validator: ValidatorsHelper.isValidMunicipality,
+          onChanged: (value) => setState(() {}),
         ),
         const SizedBox(
           height: 16,
